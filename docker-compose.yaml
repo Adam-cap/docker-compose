@@ -24,10 +24,6 @@ services:
    - 2376
    ports:
     - 8080:8080
-    - 5000:5000
-    - 50000:50000
-   environment: 
-    - DOCKER_TLS_CERTDIR="/certs"
    networks:
     - devnet
    volumes:
