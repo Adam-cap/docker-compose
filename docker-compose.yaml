@@ -29,29 +29,10 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     - /usr/local/bin/docker:/usr/local/bin/docker
     
-  sonardb:
-   image: postgres
-   networks:
-    - devnet
-   container_name: postgres
-   restart: unless-stopped
-   environment:
-    - POSTGRES_USER=adam
-    - POSTGRES_PASSWORD=123
-    - POSTGRESQL_DB=sonarqube
-   ports:
-    - "5432:5432"
-   volumes:
-    - sonarqube_db:/var/lib/postgresql
-    - postgresql_data:/var/lib/postgresql/data
-    
   sonarqube:
     image: sonarqube
     restart: unless-stopped
     container_name: sonarqube
-    stdin_open: true
-    tty: true
-    privileged: true
     ports:
     - 9000:9000
     - 9092:9092
@@ -70,6 +51,22 @@ services:
      - sonarqube_data:/opt/sonarqube/data
      - sonarqube_extensions:/opt/sonarqube/extensions
      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+     
+  sonardb:
+   image: postgres
+   networks:
+    - devnet
+   container_name: postgres
+   restart: unless-stopped
+   environment:
+    - POSTGRES_USER=adam
+    - POSTGRES_PASSWORD=123
+    - POSTGRESQL_DB=sonarqube
+   ports:
+    - "5432:5432"
+   volumes:
+    - sonarqube_db:/var/lib/postgresql
+    - postgresql_data:/var/lib/postgresql/data
     
   tomcat:
    image: tomcat
