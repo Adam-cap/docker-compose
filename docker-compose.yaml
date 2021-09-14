@@ -33,19 +33,20 @@ services:
    image: sonarqube
    container_name: sonarqube
    ports:
-    - "9000:9000"
+    - 9000:9000
    networks:
     - devnet
    depends_on:
     - db
    environment:
-    - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
+    - sonar.jdbc.username=sonar
+    - sonar.jdbc.password=sonar
+    - sonar.jdbc.url=jdbc:postgresql://db/sonar
    volumes:
     - sonarqube_conf:/opt/sonarqube/conf
     - sonarqube_data:/opt/sonarqube/data
     - sonarqube_extensions:/opt/sonarqube/extensions
-    - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
-    - sonarqube_logs:/opt/sonarqube/logs   
+    - sonarqube_plugins:/opt/sonarqube/lib/bundled-plugins
     
   db:
    image: postgres
@@ -54,9 +55,9 @@ services:
    environment:
     - POSTGRES_USER=sonar
     - POSTGRES_PASSWORD=sonar
+    - POSTGRES_DB=sonar
    volumes:
     - postgresql_data:/var/lib/postgresql/data
-    - sonarqube_db:/var/lib/postgresql
     
   tomcat:
    image: tomcat
@@ -101,10 +102,8 @@ services:
     - "6902:5900"
 
 volumes:
-  sonarqube_bundled-plugins:
+  sonarqube_plugins:
   sonarqube_conf:
   sonarqube_data:
   sonarqube_extensions:
-  sonarqube_logs:
-  sonarqube_db:
   postgresql_data:
