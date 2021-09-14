@@ -3,32 +3,6 @@ networks:
   devnet:
     driver: bridge
 services:
-  nexus:
-   image: sonatype/nexus3
-   container_name: nexus
-   ports:
-    - 8081:8081
-   networks:
-    - devnet
-   volumes:
-    - /opt/nexus:/var/lib/nexus
-
-  jenkins:
-   image: jenkins/jenkins
-   container_name: jenkins
-   stdin_open: true
-   tty: true
-   privileged: true
-   user: root
-   ports:
-    - 8080:8080
-    - 5000:5000
-    - 50000:50000
-   volumes:
-    - ~/jenkins:/var/jenkins_home
-    - /var/run/docker.sock:/var/run/docker.sock
-    - /usr/local/bin/docker:/usr/local/bin/docker
-   
   sonarqube:
    image: sonarqube
    container_name: sonarqube
@@ -58,7 +32,33 @@ services:
     - POSTGRES_DB=sonar
    volumes:
     - postgresql_data:/var/lib/postgresql/data
-    
+  
+  nexus:
+   image: sonatype/nexus3
+   container_name: nexus
+   ports:
+    - 8081:8081
+   networks:
+    - devnet
+   volumes:
+    - /opt/nexus:/var/lib/nexus
+
+  jenkins:
+   image: jenkins/jenkins
+   container_name: jenkins
+   stdin_open: true
+   tty: true
+   privileged: true
+   user: root
+   ports:
+    - 8080:8080
+    - 5000:5000
+    - 50000:50000
+   volumes:
+    - ~/jenkins:/var/jenkins_home
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /usr/local/bin/docker:/usr/local/bin/docker
+ 
   tomcat:
    image: tomcat
    ports: 
