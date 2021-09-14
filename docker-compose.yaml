@@ -6,8 +6,10 @@ services:
   sonarqube:
    image: sonarqube
    container_name: sonarqube
+   expose:
+    - 9000
    ports:
-    - 9000:9000
+    - 192.168.1.101:9000
    networks:
     - devnet
    depends_on:
@@ -15,7 +17,7 @@ services:
    environment:
     - sonar.jdbc.username=sonar
     - sonar.jdbc.password=sonar
-    - sonar.jdbc.url=jdbc:postgresql://db/sonar
+    - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
    volumes:
     - sonarqube_conf:/opt/sonarqube/conf
     - sonarqube_data:/opt/sonarqube/data
@@ -32,6 +34,7 @@ services:
     - POSTGRES_DB=sonar
    volumes:
     - postgresql_data:/var/lib/postgresql/data
+    - postgresql:/var/lib/postgresql
   
   nexus:
    image: sonatype/nexus3
@@ -107,3 +110,4 @@ volumes:
   sonarqube_data:
   sonarqube_extensions:
   postgresql_data:
+  postgresql:
