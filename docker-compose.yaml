@@ -16,19 +16,14 @@ services:
   jenkins:
    image: jenkins/jenkins
    container_name: jenkins
-   user: jenkins
    stdin_open: true
    tty: true
-   privileged: true
-   expose:
-   - 2376
    ports:
     - 8080:8080
     - 5000:5000
     - 50000:50000
    volumes:
     - /jenkins-data:/var/jenkins_home
-    - /jenkins-docker-certs:/certs/client
     
   sonardb:
    image: postgres
