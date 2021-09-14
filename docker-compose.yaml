@@ -28,7 +28,8 @@ services:
     - devnet
    volumes:
     - /data/jenkins:/var/jenkins_home
-
+    - /jenkins/docker/certs:/certs/client
+    
   sonardb:
    image: postgres
    networks:
