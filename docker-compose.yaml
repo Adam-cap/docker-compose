@@ -51,7 +51,6 @@ services:
    container_name: sonarqube
    ports:
     - 9000:9000
-    - 9092:9092
    networks:
     - devnet
    depends_on:
