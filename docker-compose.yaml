@@ -42,7 +42,7 @@ services:
    ports:
     - "5432:5432"
    volumes:
-    - postgresql_data:/var/lib/postgresql/data
+    - postgres_data:/var/lib/postgresql/data
     
   sonarqube:
     image: sonarqube
@@ -109,7 +109,7 @@ services:
     - "6902:5900"
 
   volumes:
-   postgresql_data:
+   postgres_data:
    sonarqube_bundled-plugins:
    sonarqube_conf:
    sonarqube_data:
