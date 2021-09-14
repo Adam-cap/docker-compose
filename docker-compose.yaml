@@ -36,13 +36,13 @@ services:
    container_name: postgres
    restart: unless-stopped
    environment:
-    - POSTGRES_USER=sonar
+    - POSTGRES_USER=sonarpost
     - POSTGRES_PASSWORD=sonar
     - POSTGRESQL_DB=sonar
    ports:
     - "5432:5432"
    volumes:
-    - postgres_data:/var/lib/postgresql/data
+    - postgresql_data:/var/lib/postgresql/data
     
   sonarqube:
     image: sonarqube
@@ -115,3 +115,4 @@ services:
    sonarqube_data:
    sonarqube_db:
    sonarqube_extensions:
+   sonarqube_logs:
