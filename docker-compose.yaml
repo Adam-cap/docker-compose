@@ -29,22 +29,6 @@ services:
     - /var/run/docker.sock:/var/run/docker.sock
     - /usr/local/bin/docker:/usr/local/bin/docker
     
-  sonardb:
-   image: postgres
-   networks:
-    - devnet
-   container_name: postgres
-   restart: unless-stopped
-   environment:
-    POSTGRES_USER: sonarqube
-    POSTGRES_PASSWORD: sonarqube
-    POSTGRESQL_DB: sonarqube
-   ports:
-    - "5432:5432"
-   volumes:
-    - postgresql_data:/var/lib/postgresql/data
-    - sonarqube_db:/var/lib/postgresql
-    
   sonarqube:
    image: sonarqube
    restart: unless-stopped
@@ -58,15 +42,30 @@ services:
    environment:
     SONAR_JDBC_USERNAME: sonarqube
     SONAR_JDBC_PASSWORD: sonarqube
-    SONAR_JDBC_URL: jdbc:postgresql://sonardb:5432/sonarqube
+    SONAR_JDBC_URL: jdbc:postgresql://sonardb:5432/sonar
    volumes:
     - sonarqube_conf:/opt/sonarqube/conf
     - sonarqube_data:/opt/sonarqube/data
     - sonarqube_extensions:/opt/sonarqube/extensions
     - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
-    - sonarqube_logs:/opt/sonarqube/logs
-     
-  tomcat:
+    - sonarqube_logs:/opt/sonarqube/logs   
+   
+  sonardb:
+   image: postgres
+   networks:
+    - devnet
+   container_name: postgres
+   restart: unless-stopped
+   environment:
+    POSTGRES_USER: sonarqube
+    POSTGRES_PASSWORD: sonarqube
+   ports:
+    - 5432:5432
+   volumes:
+    - postgresql_data:/var/lib/postgresql/data
+    - sonarqube_db:/var/lib/postgresql
+           
+   tomcat:
    image: tomcat
    ports: 
     - "8011:8080"
