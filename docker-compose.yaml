@@ -74,6 +74,7 @@ services:
 
   selenium-node-firefox:
    image: selenium/node-firefox
+   container_name: selenium-node-firefox
    depends_on:
     - selenium-hub
    environment:
@@ -85,6 +86,7 @@ services:
 
   selenium-node-chrome:
    image: selenium/node-chrome
+   container_name: selenium-node-chrome
    depends_on:
     - selenium-hub
    environment:
