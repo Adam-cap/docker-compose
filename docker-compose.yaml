@@ -112,3 +112,11 @@ services:
     - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
    ports:
     - "6902:5900"
+
+volumes:
+   postgresql_data:
+   sonarqube_bundled-plugins:
+   sonarqube_conf:
+   sonarqube_data:
+   sonarqube_db:
+   sonarqube_extensions:
