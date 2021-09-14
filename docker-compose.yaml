@@ -32,6 +32,9 @@ services:
   sonarqube:
    image: sonarqube
    restart: unless-stopped
+   stdin_open: true
+   tty: true
+   privileged: true
    container_name: sonarqube
    ports:
     - 9000:9000
@@ -42,7 +45,7 @@ services:
    environment:
     SONAR_JDBC_USERNAME: sonarqube
     SONAR_JDBC_PASSWORD: sonarqube
-    SONAR_JDBC_URL: jdbc:postgresql://sonardb:5432/sonar
+    SONAR_JDBC_URL: jdbc:postgresql://192.168.1.101/sonarqube
    volumes:
     - sonarqube_conf:/opt/sonarqube/conf
     - sonarqube_data:/opt/sonarqube/data
