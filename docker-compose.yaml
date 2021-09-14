@@ -14,7 +14,7 @@ services:
     - /opt/nexus:/var/lib/nexus
 
   jenkins:
-   image: jenkins/jenkins:latest
+   image: jenkins/jenkins
    container_name: jenkins
    user: jenkins
    stdin_open: true
@@ -26,17 +26,11 @@ services:
     - 50000:50000
    networks:
     - devnet
-   environment:
-    JENKINS_HOST_HOME: "/data/jenkins"
    volumes:
-    - /jenkins:/var/jenkins_home
-    - /var/run/docker.sock:/var/run/docker.sock
+    - /data/jenkins:/var/jenkins_home
 
   sonardb:
    image: postgres
-   stdin_open: true
-   tty: true
-   privileged: true
    networks:
     - devnet
    container_name: postgres
@@ -53,6 +47,9 @@ services:
   sonarqube:
     image: sonarqube
     container_name: sonarqube
+    stdin_open: true
+    tty: true
+    privileged: true
     ports:
     - 9000:9000
     networks:
