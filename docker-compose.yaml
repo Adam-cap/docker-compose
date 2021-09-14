@@ -109,11 +109,11 @@ services:
    ports:
     - "6902:5900"
 
-  volumes:
-   sonarqube_bundled-plugins:
-   sonarqube_conf:
-   sonarqube_data:
-   sonarqube_extensions:
-   sonarqube_logs:
-   sonarqube_db:
-   postgresql_data:
+volumes:
+  sonarqube_bundled-plugins:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_db:
+  postgresql_data:
