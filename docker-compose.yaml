@@ -37,7 +37,7 @@ services:
    networks:
     - devnet
    depends_on:
-    - sonardb
+    - db
    environment:
     - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
    volumes:
