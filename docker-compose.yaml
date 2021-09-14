@@ -6,8 +6,6 @@ services:
   nexus:
    image: sonatype/nexus3
    container_name: nexus
-   stdin_open: true
-   tty: true
    ports:
     - 8081:8081
    networks:
@@ -19,6 +17,9 @@ services:
    image: jenkins/jenkins:latest
    container_name: jenkins
    user: jenkins
+   stdin_open: true
+   tty: true
+   privileged: true
    ports:
     - 8080:8080
     - 5000:5000
@@ -28,13 +29,14 @@ services:
    environment:
     JENKINS_HOST_HOME: "/data/jenkins"
    volumes:
-    - /data/jenkins:/var/jenkins_home
+    - /jenkins:/var/jenkins_home
     - /var/run/docker.sock:/var/run/docker.sock
 
   sonardb:
    image: postgres
    stdin_open: true
    tty: true
+   privileged: true
    networks:
     - devnet
    container_name: postgres
