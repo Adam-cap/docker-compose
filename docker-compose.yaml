@@ -6,6 +6,8 @@ services:
   nexus:
    image: sonatype/nexus3
    container_name: nexus
+   stdin_open: true
+   tty: true
    ports:
     - 8081:8081
    networks:
@@ -31,6 +33,8 @@ services:
 
   sonardb:
    image: postgres
+   stdin_open: true
+   tty: true
    networks:
     - devnet
    container_name: postgres
