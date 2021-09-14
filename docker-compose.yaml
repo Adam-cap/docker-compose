@@ -1,99 +1,95 @@
-version: "3.9"  
-
-#siec
+version: '3.9'
 networks:
-  net:
+  devnet:
     driver: bridge
-
-#serwisy
 services:
   nexus:
-    image: sonatype/nexus3
-    container_name: nexus
-    ports:
-      - 8081:8081
-    networks:
-      - net
-    volumes:
-      - "/opt/nexus:/var/lib/nexus"
+   image: sonatype/nexus3
+   container_name: nexus
+   ports:
+    - 8081:8081
+   networks:
+    - devnet
+   volumes:
+    - /opt/nexus:/var/lib/nexus
 
   jenkins:
-    image: jenkins
-    container_name: jenkins
-    ports:
-      - 8080:8080
-    networks:
-      - net
-    volumes:
-      - "$PWD/jenkins:/var/jenkins_home"
+   image: jenkins/jenkins
+   container_name: jenkins
+   ports:
+    - 8080:8080
+   networks:
+    - devnet
+   volumes:
+    - $PWD/jenkins:/var/jenkins_home
+
+  sonardb:
+   image: postgres
+   networks:
+    - devnet
+   container_name: postgres
+   restart: always
+   environment:
+    - POSTGRES_USER=adam
+    - POSTGRES_PASSWORD=123
+    - POSTGRESQL_DB=sonar
+   ports:
+    - "5432:5432"
+   volumes:
+    - /var/lib/postgresql/data
 
   sonarqube:
     image: sonarqube
     container_name: sonarqube
-    restart: always
     ports:
-      - 9000:9000
+    - 9000:9000
     networks:
-      - net
+      - devnet
     depends_on:
       - sonardb
+    links:
+      - sonardb
     environment:
-     - SONARQUBE_JDBC_URL=jdbc:postgresql://sonardb:5432/sonar
+     - SONARQUBE_JDBC_URL="jdbc:postgresql://sonardb:5432/sonar"
      - SONARQUBE_JDBC_USERNAME=adam
      - SONARQUBE_JDBC_PASSWORD=123
-    volumes:
-      - "/opt/sonar:/var/lib/sonar"
+    
+  tomcat:
+   image: tomcat
+   ports: 
+    - "8011:8080"
+   networks:
+    - devnet
+   container_name: tomcat
+   volumes:
+    - ./logs/:/urs/local/tomcat/logs/
 
-    sonardb:
-      networks:
-        - net
-      image: postgres
-      container_name: postgres
-      restart: always
-      environment:
-        - POSTGRES_USER=adam
-        - POSTGRES_PASSWORD=123
-        - POSTGRESQL_DB=database
-      ports:
-        - "5432:5432"
-      volumes:
-        - "opt/postgres:/var/lib/postgresql"
+  selenium-hub:
+   image: selenium/hub
+   container_name: selenium-hub
+   ports:
+    - "4442:4442"
+    - "4443:4443" 
+    - "4444:4444"
 
-    tomcat:
-      image: tomcat
-      ports: 
-        - "8011:8080"
-      container_name: tomcat
-      volumes:
-        - ./logs/:/urs/local/tomcat/logs/
+  selenium-node-firefox:
+   image: selenium/node-firefox
+   depends_on:
+    - selenium-hub
+   environment:
+    - SE_EVENT_BUS_HOST=selenium_hub
+    - SE_EVENT_BUS_PUBLISH_PORT=4442
+    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+   ports:
+    - "6901:5900"
 
-    selenium_hub:
-      image: selenium/hub
-      ports:
-        - "4442:4442"
-        - "4443:4443"
-        - "4444:4444"
-
-    selenium_node_firefox:
-      image: selenium/node-firefox
-      shm_size: 2gb
-      depends_on:
-        - selenium_hub
-      environment:
-      - SE_EVENT_BUS_HOST=selenium_hub
-      - SE_EVENT_BUS_PUBLISH_PORT=4442
-      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
-      ports:
-        - "6901:5900"
-
-    selenium_node_chrome:
-      image: selenium/node-chrome
-      shm_size: 2gb
-      depends_on:
-        - selenium_hub
-      environment:
-        - SE_EVENT_BUS_HOST=selenium_hub
-        - SE_EVENT_BUS_PUBLISH_PORT=4442
-        - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
-      ports:
-        - "6902:5900"
+  selenium-node-chrome:
+   image: selenium/node-chrome
+   depends_on:
+    - selenium-hub
+   environment:
+    - SE_EVENT_BUS_HOST=selenium_hub
+    - SE_EVENT_BUS_PUBLISH_PORT=4442
+    - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+   ports:
+    - "6902:5900"
