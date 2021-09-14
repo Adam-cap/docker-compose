@@ -9,7 +9,7 @@ services:
    expose:
     - 9000
    ports:
-    - "172.17.0.1:9000:9000"
+    - "192.168.80.5:9000:9000"
    networks:
     - devnet
    depends_on:
