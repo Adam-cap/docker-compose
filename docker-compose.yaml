@@ -28,7 +28,7 @@ services:
     - ~/jenkins:/var/jenkins_home
     - /var/run/docker.sock:/var/run/docker.sock
     - /usr/local/bin/docker:/usr/local/bin/docker
-    
+   
   sonarqube:
    image: sonarqube
    restart: unless-stopped
@@ -49,7 +49,7 @@ services:
     - sonarqube_extensions:/opt/sonarqube/extensions
     - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
     - sonarqube_logs:/opt/sonarqube/logs   
-   
+    
   sonardb:
    image: postgres
    networks:
@@ -64,8 +64,8 @@ services:
    volumes:
     - postgresql_data:/var/lib/postgresql/data
     - sonarqube_db:/var/lib/postgresql
-           
-   tomcat:
+    
+  tomcat:
    image: tomcat
    ports: 
     - "8011:8080"
