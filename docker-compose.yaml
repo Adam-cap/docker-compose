@@ -110,10 +110,10 @@ services:
     - "6902:5900"
 
   volumes:
-   postgresql_data:
    sonarqube_bundled-plugins:
    sonarqube_conf:
    sonarqube_data:
-   sonarqube_db:
    sonarqube_extensions:
    sonarqube_logs:
+   sonarqube_db:
+   postgresql_data:
